@@ -6,13 +6,13 @@
 
 %% Loading images
 
-data.mem_im = gaussfilt(imread(membrane),0.7);
-data.tmod_im = gaussfilt(imread(tmod),0.7);
-data.mbs_im = gaussfilt(imread(mbs),0.7);
+data.mem_im = double(gaussfilt(imread(membrane),0.7));
+data.tmod_im = double(gaussfilt(imread(actin),0.7));
+%data.mbs_im = double(gaussfilt(imread(Rho),0.7));
 
 
 %% Importing EDGE data
-measdir = strcat('/Users/Jonathan/Documents/MATLAB/EDGE-1/DATA_GUI/', filename, '/Measurements/')
+measdir = strcat('/Users/jcoravos/Documents/MATLAB/EDGE-1.06/DATA_GUI/', filename, '/Measurements/')
 
 measVerty = 'Membranes--vertices--Vertex-y.mat';
 measVertx = 'Membranes--vertices--Vertex-x.mat';
@@ -21,41 +21,45 @@ Verty = squeeze(Verty.data(:,1,:));
 Vertx = load(strcat(measdir,measVertx));
 Vertx = squeeze(Vertx.data(:,1,:));
 
+%{
+Verty = Verty(1,:)
+Vertx = Vertx(1,:)
+%}
 
 %% Calculating junctional and medial intensities
-    [tmod_junct,tmod_medial] = Junct_Medial(Vertx,Verty,pc,data.tmod_im);
-    [mem_junct,mem_medial] = Junct_Medial(Vertx,Verty,pc,data.mem_im);
-    [mbs_junct,mbs_medial] = Junct_Medial(Vertx,Verty,pc, data.mbs_im);
+    [junct,medial] = Junct_Medial(Vertx,Verty,pc,data.tmod_im);
+    [junct2,medial2] = Junct_Medial(Vertx,Verty,pc,data.mem_im);
+    %[mbs_junct,mbs_medial] = Junct_Medial(Vertx,Verty,pc, data.mbs_im);
     
 %% Calculating Ratios
 
-    tmod_jm = tmod_junct./tmod_medial;
-    mem_jm = mem_junct./mem_medial;
-    mbs_jm = mbs_junct./mbs_medial;
+    tmod_jm = junct./medial;
+    mem_jm = junct2./medial2;
+    %mbs_jm = mbs_junct./mbs_medial;
     
     
     
     
- %% Plotting Intensities
- %{
-figure,
- boxplot([tmod_junct',tmod_medial'],'labels',{'Junctional','Medial'})
- title('tmod')
- 
- figure,
- boxplot([mem_junct',mem_medial'],'labels',{'Junctional','Medial'})
- title('mem')
- 
- figure,
- boxplot([mbs_junct',mbs_medial'],'labels',{'Junctional','Medial'})
- title('mbs')
+% %  %% Plotting Intensities
+% % %  
+% % % figure,
+% % %  boxplot([tmod_junct',tmod_medial'],'labels',{'Junctional','Medial'})
+% % %  title('tmod')
+% % %  
+% % %  figure,
+% % %  boxplot([mem_junct',mem_medial'],'labels',{'Junctional','Medial'})
+% % %  title('mem')
+% % %  
+% % % figure,
+% % % boxplot([mbs_junct',mbs_medial'],'labels',{'Junctional','Medial'})
+% % % title('mbs')
 
 %% Plotting Ratios
-
+% % 
 figure,
-boxplot([tmod_jm',mem_jm',mbs_jm'],'labels',{'Tmod','Subapical Membrane','MBS'})
+boxplot([tmod_jm'])
 title('Junctional:Medial Ratio in Ventral Furrow')
-
- %}
-        
-
+% 
+%  
+%         
+% 
