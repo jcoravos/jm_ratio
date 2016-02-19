@@ -1,5 +1,5 @@
 
-function [] jm_master(image,edge_dir)
+function [jm_ratio] = jm_master(image,edge_dir)
 %% Master Script for Junctional vs Medial measurement
 %% User Inputs
 % Get these from Junc_Med_CONFIG
@@ -61,5 +61,5 @@ boxplot([tmod_jm'])
 title('Junctional:Medial Ratio in Ventral Furrow')
 % 
 %  
-%         
+end
 % 
