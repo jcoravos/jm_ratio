@@ -1,6 +1,6 @@
 %% Master Script for juntional master
 
-pixelErosion = 5
+pixelErosion = 4
 pixelConversion = 0.09
 
 j.noinj = []
@@ -97,7 +97,6 @@ shDiaMat([end:maxLength],:) = NaN
 
 aggMat = cat(2,noInjMat,shWhiteMat)
 aggMat = cat(2,aggMat,shDiaMat)
-
 %%
 labels = {'No Injection Junct' ,'No Injection Med','shWhite Junct','shWhite Med','shDia Junct','shDia Med'}
 cellAggMat = mat2cell(aggMat,maxLength,[1,1,1,1,1,1])
@@ -105,11 +104,35 @@ figure,plotSpread(cellAggMat,0.05,[],labels)
 hold on
 boxplot(aggMat,labels)
 
-%%
-
 figure,
 boxplot(aggMat,labels)
 
 figure
 [p,t,stats] = kruskalwallis(aggMat);
 c = multcompare(stats)
+
+
+%% Calculating Claudia's Polarity Metric
+
+noInjDiff   = (m.noinj - j.noinj)'%./(m.noinj + j.noinj))';
+shWhiteDiff = (m.shWhite - j.shWhite)'%./(m.shWhite + j.shWhite))';
+shDiaDiff   = (m.shDia - j.shDia)'%./(m.shDia + j.shDia))';
+
+maxLength = max([length(noInjDiff),length(shWhiteDiff),length(shDiaDiff)]);
+noInjDiff([end:maxLength]) = NaN
+shWhiteDiff([end:maxLength],:) = NaN
+shDiaDiff([end:maxLength],:) = NaN
+
+agg = [noInjDiff,shWhiteDiff,shDiaDiff]
+
+figure,
+labels = {'No Injection','shWhite','shDia'}
+plotSpread(agg,0.05,[],labels)
+hold on
+boxplot(agg,labels)
+
+[p,t,stats] = kruskalwallis(agg);
+c = multcompare(stats)
+
+
+

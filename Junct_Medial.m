@@ -1,6 +1,8 @@
 function [junct,medial] = jm(Vertx,Verty,pc, image,pe)
 %Junctional and Medial calculator determines the mean pixel intensity in
 %medial and junctional pixels
+[m,~] = size(image);
+disp(':)')
     for cell = 1:length(Vertx)
         if isnan(Vertx{cell}) 
             continue
@@ -16,5 +18,4 @@ function [junct,medial] = jm(Vertx,Verty,pc, image,pe)
         ind = find(junctional_pixels ~= 0);
         junct(cell) = mean(junctional_pixels(ind));
         
-        disp(cell)
     end

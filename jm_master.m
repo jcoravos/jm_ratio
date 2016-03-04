@@ -4,7 +4,7 @@ function [juncMean,medMean] = jm_master(image,edgeDir,fileName,pixelConversion,p
 
 
 %% Importing EDGE data
-measdir = strcat(edgeDir, fileName, '/Measurements/')
+measdir = strcat(edgeDir, fileName, '/Measurements/');
 
 measVerty = 'Membranes--vertices--Vertex-y.mat';
 measVertx = 'Membranes--vertices--Vertex-x.mat';

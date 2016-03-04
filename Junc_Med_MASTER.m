@@ -1,5 +1,5 @@
 
-function [] jm_master(image,edge_dir)
+function [jm_ratio] = jm_master(image,edge_dir)
 %% Master Script for Junctional vs Medial measurement
 %% User Inputs
 % Get these from Junc_Med_CONFIG
@@ -7,12 +7,13 @@ function [] jm_master(image,edge_dir)
 %% Loading images
 
 data.mem_im = double(gaussfilt(imread(membrane),0.7));
-data.tmod_im = double(gaussfilt(imread(actin),0.7));
-%data.mbs_im = double(gaussfilt(imread(Rho),0.7));
+data.tmod_im = double(gaussfilt(imread(tmod),0.7));
+data.mbs_im = double(gaussfilt(imread(mbs),0.7));
+
 
 
 %% Importing EDGE data
-measdir = strcat('/Users/jcoravos/Documents/MATLAB/EDGE-1.06/DATA_GUI/', filename, '/Measurements/')
+measdir = strcat('/Users/jcoravos/Documents/MATLAB/EDGE-1.06/DATA_GUI/', filename, '_apical','/Measurements/')
 
 measVerty = 'Membranes--vertices--Vertex-y.mat';
 measVertx = 'Membranes--vertices--Vertex-x.mat';
@@ -29,7 +30,7 @@ Vertx = Vertx(1,:)
 %% Calculating junctional and medial intensities
     [junct,medial] = Junct_Medial(Vertx,Verty,pc,data.tmod_im);
     [junct2,medial2] = Junct_Medial(Vertx,Verty,pc,data.mem_im);
-    %[mbs_junct,mbs_medial] = Junct_Medial(Vertx,Verty,pc, data.mbs_im);
+    [mbs_junct,mbs_medial] = Junct_Medial(Vertx,Verty,pc, data.mbs_im);
     
 %% Calculating Ratios
 
@@ -61,5 +62,5 @@ boxplot([tmod_jm'])
 title('Junctional:Medial Ratio in Ventral Furrow')
 % 
 %  
-%         
+end
 % 
